@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tuempresa</groupId>
+    <artifactId>projectvvs2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <openxava.version>7.4.3</openxava.version>
+        <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!-- OpenXava Dependency -->
+        <dependency>
+            <groupId>org.openxava</groupId>
+            <artifactId>openxava</artifactId>
+            <version>${openxava.version}</version>
+        </dependency>
+
+        <!-- JUnit 5 Dependency for Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>projectvvs2</finalName>
+        <plugins>
+            <!-- JaCoCo Plugin for Code Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                    <!-- Preparar JaCoCo antes de ejecutar las pruebas -->
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Generar el informe después de ejecutar las pruebas -->
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <!-- Verificar los umbrales de cobertura (opcional) -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum> <!-- Mínimo 80% de cobertura de líneas -->
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Dependency Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.openxava</groupId>
+                                    <artifactId>openxava</artifactId>
+                                    <version>${openxava.version}</version>
+                                    <outputDirectory>src/main/resources</outputDirectory>
+                                    <includes>xava/dtds/*</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven WAR Plugin -->
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <packagingExcludes>WEB-INF/lib/ecj-3*.jar,
+                        WEB-INF/lib/fontbox-*.jar,
+                        WEB-INF/lib/htmlunit-*.jar,
+                        WEB-INF/lib/httpclient-*.jar,
+                        WEB-INF/lib/httpcore-*.jar,
+                        WEB-INF/lib/httpmime-*.jar,
+                        WEB-INF/lib/jetty-*.jar,
+                        WEB-INF/lib/junit-*.jar,
+                        WEB-INF/lib/neko-htmlunit-*.jar,
+                        WEB-INF/lib/pdfbox-*.jar,
+                        WEB-INF/lib/serializer-*.jar,
+                        WEB-INF/lib/tomcat-*.jar,
+                        WEB-INF/lib/websocket-*.jar,
+                        WEB-INF/lib/xalan-*.jar,
+                        WEB-INF/lib/xercesImpl-*.jar,
+                        WEB-INF/lib/xml-apis-*.jar</packagingExcludes>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Surefire Plugin for Running Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
