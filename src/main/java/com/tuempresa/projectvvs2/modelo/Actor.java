@@ -8,7 +8,7 @@ import javax.persistence.*;
 import org.openxava.annotations.*;
 
 @Entity
-@Tab(properties = "nombre, fechaNacimiento, nacionalidad")
+@Tab(properties = "id, nombre, fechaNacimiento, nacionalidad")
 public class Actor {
 
     @Id
@@ -19,8 +19,9 @@ public class Actor {
     @Required
     private String nombre;
 
-    @Stereotype("DATE")
-    private java.util.Date fechaNacimiento;
+
+    @Column(length = 100)
+    private String fechaNacimiento;
 
     @Column(length = 100)
     private String nacionalidad;
@@ -46,13 +47,7 @@ public class Actor {
         this.nombre = nombre;
     }
 
-    public java.util.Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
 
-    public void setFechaNacimiento(java.util.Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
 
     public String getNacionalidad() {
         return nacionalidad;
